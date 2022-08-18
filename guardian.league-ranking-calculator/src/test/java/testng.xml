@@ -1,0 +1,16 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+  
+<suite name="League Ranking Calculator" verbose="1" >
+  
+  <test name="UnitTests" >
+    <groups>
+      <run>
+        <include name="testng-unittest-utils" />
+      </run>
+    </groups>
+    <packages>
+      <package name=".*" />
+    </packages>
+  </test>
+   
+</suite>

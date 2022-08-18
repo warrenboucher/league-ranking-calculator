@@ -1,0 +1,130 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>guardian</groupId>
+	<artifactId>guardian.league-ranking-calculator</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>league-ranking-calculator</name>
+	<description>calculate the ranking table for a league.</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		
+		<version.log4j>2.17.1</version.log4j>
+		<version.slf4j>1.7.36</version.slf4j>
+		<version.guice>5.0.1</version.guice>
+		
+		<version.testng>7.4.0</version.testng>
+		<version.mockito>1.10.19</version.mockito>
+		<version.mockito.testng>0.4.13</version.mockito.testng>	
+		
+		<version.jacoco>0.8.7</version.jacoco>
+		<version.surefire>3.0.0-M7</version.surefire>
+		<version.owaspdependencychecker>7.1.1</version.owaspdependencychecker>
+		
+	</properties>
+
+	<build>
+		<defaultGoal>clean generate-sources compile install</defaultGoal>
+
+		<plugins>
+
+			<!-- During maven test phase generates code coverage reports in target\site\jacoco -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${version.jacoco}</version>
+				<executions>
+					<execution>
+						<goals>
+							<!-- 
+							The prepare-agent goal prepares the JaCoCo runtime agent to record 
+							the execution data. It records the number of lines executed, backtraced, 
+							etc. By default, the execution data is written to the file target/jacoco-ut.exec. 
+							-->
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<!-- 
+							The report goal creates code coverage reports from the execution 
+							data recorded by the JaCoCo runtime agent. Since we have specified the phase 
+							property, the reports will be created after the compilation of the test phase. 
+							By default, the execution data is read from the file target/jacoco-ut.exec, 
+							and the code coverage report is written to the directory target/site/jacoco/index.html. 
+							-->
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- During maven test phase generates unit test results in target\surefire-reports -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${version.surefire}</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>src/test/java/testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+
+			<!-- Check dependencies for security vulnarabilities -->
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>${version.owaspdependencychecker}</version>
+				<configuration>
+					<format>ALL</format>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${version.log4j}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${version.log4j}</version>
+		</dependency>		
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${version.guice}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${version.testng}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${version.mockito}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-testng</artifactId>
+			<version>${version.mockito.testng}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>
