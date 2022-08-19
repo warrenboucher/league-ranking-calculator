@@ -6,6 +6,7 @@
     <groups>
       <run>
         <include name="testng-unittest-utils" />
+        <include name="testng-unittest-models" />        
       </run>
     </groups>
     <packages>

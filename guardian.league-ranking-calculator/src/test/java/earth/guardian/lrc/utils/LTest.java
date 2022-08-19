@@ -42,7 +42,7 @@ public class LTest {
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		LrcRuntime.setInjector(injector);
-		Mockito.reset(simpleLoggerMaker);
+		Mockito.reset(simpleLoggerMaker);		
 	}
 	
 	/**
