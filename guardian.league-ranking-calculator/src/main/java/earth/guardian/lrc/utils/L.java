@@ -2,21 +2,40 @@ package earth.guardian.lrc.utils;
 
 import org.apache.logging.log4j.Logger;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import earth.guardian.lrc.LrcRuntime;
 import earth.guardian.lrc.Main;
 
 /**
  * Using short class name because we will be using logging everywhere.  L is also a convention in some languages.
  */
+@Singleton
 public class L {
 
-	private static final int INDEX_CALLING_CLASS = 2; // 0 = Thread.  1 = This method.  2 = Who called this method.
+	/**
+	 * 0 = Thread.  
+	 * 1 = getCallingClass
+	 * 2 = This method.  
+	 * 3 = Who called this method.
+	 */
+	private static final int INDEX_CALLING_CLASS_BASIC = 3;
+	
+	/**
+	 * 0 = Thread.  
+	 * 1 = getCallingClass
+	 * 2 = logging method  
+	 * 3 = Who called logging method.
+	 *  */
+	private static final int INDEX_CALLING_CLASS_LOG_METHOD = 4; 
 	
 	/**
 	 * 
 	 */
-	private L() {
-		// Do not allow instantiation.
+	@Inject
+	public L() {
+		// Inject constructor. 
 	}
 	
 	/**
@@ -27,13 +46,20 @@ public class L {
 	 * @return
 	 */
 	public static Logger getLogger() {		
-		final StackTraceElement element = Thread.currentThread().getStackTrace()[INDEX_CALLING_CLASS];
+		return getLogger(getCallingClass(INDEX_CALLING_CLASS_BASIC));	
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private static Class<?> getCallingClass(int callingClassIndex) {
 		try {
-			Class<?> clazz = Class.forName(element.getClassName());
-			return getLogger(clazz);
+			final StackTraceElement element = Thread.currentThread().getStackTrace()[callingClassIndex];
+			return Class.forName(element.getClassName());
 		} catch (ClassNotFoundException e) {
-			return getLogger(Main.class);
-		}		
+			return Main.class; // Log against main class instead of having nothing logged.
+		}	
 	}
 	
 	/**
@@ -43,6 +69,17 @@ public class L {
 	 */
 	public static Logger getLogger(Class<?> clazz) {
 		return LrcRuntime.getInjector().getInstance(SimpleLoggerMaker.class).make(clazz);
+	}
+	
+	/**
+	 * 
+	 * @param teamName
+	 * @param matchScore
+	 * @param seasonScore
+	 */
+	public void logMatchResult(String teamName, int matchScore, long seasonScore) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.debug("{} {} recorded match score {}.  Season total is {}.", LrcRuntime.getCorrelationId(), teamName, matchScore, seasonScore);
 	}
 	
 }
