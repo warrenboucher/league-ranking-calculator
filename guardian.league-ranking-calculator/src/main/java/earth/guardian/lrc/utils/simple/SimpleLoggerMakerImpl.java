@@ -1,4 +1,4 @@
-package earth.guardian.lrc.utils;
+package earth.guardian.lrc.utils.simple;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

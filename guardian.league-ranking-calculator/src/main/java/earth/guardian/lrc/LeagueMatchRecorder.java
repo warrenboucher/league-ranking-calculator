@@ -1,4 +1,4 @@
-package earth.guardian.lrc.utils;
+package earth.guardian.lrc;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,13 +7,10 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import earth.guardian.lrc.model.Team;
-import earth.guardian.lrc.model.TeamMatch;
+import earth.guardian.lrc.enums.MatchScore;
 
 /**
- * A draw (tie) is worth 1 point.
- * A win is worth 3 points. 
- * A loss is worth 0 points.
+ * Takes match as input and records each teams score.
  */
 @Singleton
 public class LeagueMatchRecorder {
@@ -22,17 +19,13 @@ public class LeagueMatchRecorder {
 	 * In memory record of all teams that have played a match.
 	 */
 	@Inject private TeamCache teamCache;
-	
-	private static final int WIN_PTS = 3;
-	private static final int DRAW_PTS = 1;
-	private static final int LOSS_PTS = 0;	
-	
+
 	private static final int MATCH_TEAM_A_INDEX = 0;
 	private static final int MATCH_TEAM_B_INDEX = 1;
 	private static final String MATCH_TEAM_SEPARATOR = ",";		
 	
 	/**
-	 * 
+	 * Receives input for a single match.
 	 * @param match For example "Lions 3, Snakes 3"
 	 */
 	public void recordMatchResult(String match) {
@@ -43,7 +36,7 @@ public class LeagueMatchRecorder {
 	}
 	
 	/**
-	 * 
+	 * Receives input for a single match.
 	 * @param teamMatchA
 	 * @param teamMatchB
 	 */
@@ -52,14 +45,14 @@ public class LeagueMatchRecorder {
 		final int matchScoreB = teamMatchB.getMatchScore();
 		
 		if (matchScoreA == matchScoreB) {
-			teamCache.getTeamByName(teamMatchA.getTeamName()).recordMatchScore(DRAW_PTS);
-			teamCache.getTeamByName(teamMatchB.getTeamName()).recordMatchScore(DRAW_PTS);	
+			teamCache.getOrCreateByTeamByName(teamMatchA.getTeamName()).recordMatchScore(MatchScore.DRAW);
+			teamCache.getOrCreateByTeamByName(teamMatchB.getTeamName()).recordMatchScore(MatchScore.DRAW);	
 		} else if (matchScoreA > matchScoreB) {
-			teamCache.getTeamByName(teamMatchA.getTeamName()).recordMatchScore(WIN_PTS);
-			teamCache.getTeamByName(teamMatchB.getTeamName()).recordMatchScore(LOSS_PTS);	
+			teamCache.getOrCreateByTeamByName(teamMatchA.getTeamName()).recordMatchScore(MatchScore.WON);
+			teamCache.getOrCreateByTeamByName(teamMatchB.getTeamName()).recordMatchScore(MatchScore.LOSS);	
 		} else {
-			teamCache.getTeamByName(teamMatchA.getTeamName()).recordMatchScore(LOSS_PTS);
-			teamCache.getTeamByName(teamMatchB.getTeamName()).recordMatchScore(WIN_PTS);
+			teamCache.getOrCreateByTeamByName(teamMatchA.getTeamName()).recordMatchScore(MatchScore.LOSS);
+			teamCache.getOrCreateByTeamByName(teamMatchB.getTeamName()).recordMatchScore(MatchScore.WON);
 		}	
 	}
 

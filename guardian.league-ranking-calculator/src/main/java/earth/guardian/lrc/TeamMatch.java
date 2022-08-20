@@ -1,9 +1,12 @@
-package earth.guardian.lrc.model;
+package earth.guardian.lrc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Encapsulates a team match.
+ */
 public class TeamMatch {
 	private static final String TEAM_MATCH_PARTS_SEPARATOR = " ";
 	private final String teamName;
@@ -28,7 +31,7 @@ public class TeamMatch {
 	}
 	
 	/**
-	 * 
+	 * Create a TeamMatch object from part of the match input specific to a team.
 	 * @param teamMatch For example "FC Awesome 0";
 	 * @return
 	 */

@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 
 import earth.guardian.lrc.LrcRuntime;
 import earth.guardian.lrc.Main;
+import earth.guardian.lrc.utils.simple.SimpleLoggerMaker;
 
 /**
  * Using short class name because we will be using logging everywhere.  L is also a convention in some languages.

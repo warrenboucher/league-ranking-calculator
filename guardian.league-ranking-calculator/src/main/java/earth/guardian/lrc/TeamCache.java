@@ -1,4 +1,4 @@
-package earth.guardian.lrc.utils;
+package earth.guardian.lrc;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,10 +7,8 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import earth.guardian.lrc.model.Team;
-
 /**
- * 
+ * In memory cache of all teams.
  */
 @Singleton
 public class TeamCache {
@@ -30,7 +28,7 @@ public class TeamCache {
 	 * @param teamName
 	 * @return
 	 */
-	public Team getTeamByName(String teamName) {
+	public Team getOrCreateByTeamByName(String teamName) {
 		final String key = teamName.toLowerCase();
 		if (leagueTeams.containsKey(key)) {
 			return leagueTeams.get(key);

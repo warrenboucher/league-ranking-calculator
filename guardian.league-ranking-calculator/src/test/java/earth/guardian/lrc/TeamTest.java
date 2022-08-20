@@ -1,4 +1,4 @@
-package earth.guardian.lrc.model;
+package earth.guardian.lrc;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -13,11 +13,11 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import earth.guardian.lrc.LrcRuntime;
-import earth.guardian.lrc.TestConstants;
-import earth.guardian.lrc.model.TeamTest.TeamTestModule;
+import earth.guardian.lrc.TeamTest.TeamTestModule;
+import earth.guardian.lrc.constants.MatchConstants;
+import earth.guardian.lrc.enums.MatchScore;
 import earth.guardian.lrc.utils.L;
-import earth.guardian.lrc.utils.SimpleLoggerMaker;
+import earth.guardian.lrc.utils.simple.SimpleLoggerMaker;
 
 @Guice(modules = {TeamTestModule.class})
 public class TeamTest {
@@ -66,19 +66,19 @@ public class TeamTest {
 		final ArgumentCaptor<Long> seasonScoreCaptor = ArgumentCaptor.forClass(Long.class);
 		
 		// 1. Exercise fixture:
-		fixture.recordMatchScore(10);
-		fixture.recordMatchScore(5);
+		fixture.recordMatchScore(MatchScore.WON);
+		fixture.recordMatchScore(MatchScore.DRAW);
 		
 		Mockito.verify(mockLogger, Mockito.times(2)).logMatchResult(teamNameCaptor.capture(), matchScoreCaptor.capture(), seasonScoreCaptor.capture());
 
 		// 2. Asserts
-		Assert.assertEquals(fixture.getSeasonScore(), 15, "Match scores not correctly accumulated.");
+		Assert.assertEquals(fixture.getSeasonScore(), 4, "Match scores not correctly accumulated.");
 		Assert.assertEquals(teamNameCaptor.getAllValues().get(0), TEST_TEAM_NAME, "Unexpected teams name logged");
 		Assert.assertEquals(teamNameCaptor.getAllValues().get(1), TEST_TEAM_NAME, "Unexpected teams name logged");		
-		Assert.assertEquals(matchScoreCaptor.getAllValues().get(0).intValue(), 10, "Unexpected match score logged");
-		Assert.assertEquals(matchScoreCaptor.getAllValues().get(1).intValue(), 5, "Unexpected match score logged");		
-		Assert.assertEquals(seasonScoreCaptor.getAllValues().get(0).intValue(), 10, "Unexpected season score logged");
-		Assert.assertEquals(seasonScoreCaptor.getAllValues().get(1).intValue(), 15, "Unexpected season score logged");
+		Assert.assertEquals(matchScoreCaptor.getAllValues().get(0).intValue(), MatchConstants.getWinPoints(), "Unexpected match score logged");
+		Assert.assertEquals(matchScoreCaptor.getAllValues().get(1).intValue(), MatchConstants.getDrawPoints(), "Unexpected match score logged");		
+		Assert.assertEquals(seasonScoreCaptor.getAllValues().get(0).intValue(), 3, "Unexpected season score logged");
+		Assert.assertEquals(seasonScoreCaptor.getAllValues().get(1).intValue(), 4, "Unexpected season score logged");
 	}
 	
 	/**
@@ -87,9 +87,9 @@ public class TeamTest {
 	@Test(groups = TestConstants.UNITTEST_MODELS)
 	public void testOutputSeasonResult() {
 		final Team fixture = new Team(TEST_TEAM_NAME);
-		fixture.recordMatchScore(10);
-		fixture.recordMatchScore(5);		
-		Assert.assertEquals(fixture.toString(), "Lions, 15 pts", "Unexpected season result.");				
+		fixture.recordMatchScore(MatchScore.WON);
+		fixture.recordMatchScore(MatchScore.DRAW);		
+		Assert.assertEquals(fixture.toString(), "Lions, 4 pts", "Unexpected season result.");				
 	}
 	
 	/**

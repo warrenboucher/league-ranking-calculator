@@ -1,4 +1,4 @@
-package earth.guardian.lrc.utils;
+package earth.guardian.lrc;
 
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -12,9 +12,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 
-import earth.guardian.lrc.LrcRuntime;
-import earth.guardian.lrc.TestConstants;
-import earth.guardian.lrc.utils.LeagueMatchRecorderTest.LeagueMatchRecorderTestModule;
+import earth.guardian.lrc.LeagueMatchRecorderTest.LeagueMatchRecorderTestModule;
+import earth.guardian.lrc.utils.L;
+import earth.guardian.lrc.utils.simple.SimpleLoggerMaker;
 
 /**
  * 

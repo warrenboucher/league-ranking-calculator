@@ -1,7 +1,6 @@
-package earth.guardian.lrc.model;
+package earth.guardian.lrc;
 
-import earth.guardian.lrc.LrcRuntime;
-import earth.guardian.lrc.MatchConstants;
+import earth.guardian.lrc.enums.MatchScore;
 import earth.guardian.lrc.utils.L;
 
 /**
@@ -25,11 +24,9 @@ public class Team {
 	 * 
 	 * @param matchScore
 	 */
-	public void recordMatchScore(int matchScore) {
-		if (MatchConstants.MINIMUM_SCORE < matchScore) {
-			seasonScore +=  matchScore;
-			log.logMatchResult(getTeamName(), matchScore, seasonScore);
-		}		
+	public void recordMatchScore(MatchScore matchScore) {
+		seasonScore +=  matchScore.getPoints();
+		log.logMatchResult(getTeamName(), matchScore.getPoints(), seasonScore);	
 	}
 		
 	/**

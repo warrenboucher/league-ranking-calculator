@@ -1,8 +1,6 @@
-package earth.guardian.lrc.utils;
+package earth.guardian.lrc;
 
 import java.util.Comparator;
-
-import earth.guardian.lrc.model.Team;
 
 /**
  * Order by score and then by name (Ignore case)
