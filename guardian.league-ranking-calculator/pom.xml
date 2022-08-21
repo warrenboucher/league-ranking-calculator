@@ -23,6 +23,8 @@
 		<version.jacoco>0.8.7</version.jacoco>
 		<version.surefire>3.0.0-M7</version.surefire>
 		<version.owaspdependencychecker>7.1.1</version.owaspdependencychecker>
+		<version.mavenjarplugin>3.2.2</version.mavenjarplugin>
+		<version.mavendependencyplugin>3.2.0</version.mavendependencyplugin>
 		
 	</properties>
 
@@ -92,7 +94,48 @@
 					<format>ALL</format>
 				</configuration>
 			</plugin>
-
+			
+			<!-- Copy project dependency (*.jars) into libs folder -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${version.mavendependencyplugin}</version>
+				<!-- If we put configuration ouside of execution, it gets used for all executions. -->
+				<configuration>
+					<!-- We need runtime dependency only -->
+					<includeScope>runtime</includeScope>
+					<outputDirectory>${project.basedir}/target/libs/</outputDirectory>
+					<overWriteReleases>false</overWriteReleases>
+					<overWriteSnapshots>false</overWriteSnapshots>
+					<overWriteIfNewer>true</overWriteIfNewer>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>			
+			
+			<!-- Create executable jar -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${version.mavenjarplugin}</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>libs/</classpathPrefix>
+							<mainClass>earth.guardian.lrc.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+						
 		</plugins>
 
 	</build>
