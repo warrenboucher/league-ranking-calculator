@@ -39,7 +39,7 @@ public class LTest {
 	/**
 	 * Run before each test to setup mocks and any other required setup.
 	 */
-	@BeforeMethod(groups = TestConstants.UNITTEST_UTILS)
+	@BeforeMethod(groups = TestConstants.UNITTEST)
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		LrcRuntime.setInjector(injector);
@@ -49,7 +49,7 @@ public class LTest {
 	/**
 	 * Basic test to see that <code>L.getLogger()</code> returns a logger.
 	 */
-	@Test(groups = TestConstants.UNITTEST_UTILS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testBasicGetLogger() {
 		
 		@SuppressWarnings("rawtypes")
@@ -72,7 +72,7 @@ public class LTest {
 	/**
 	 * Basic test to see that <code>L.getLogger(class)</code> returns a logger.
 	 */
-	@Test(groups = TestConstants.UNITTEST_UTILS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testClassProvidedGetLogger() {
 		
 		@SuppressWarnings("rawtypes")

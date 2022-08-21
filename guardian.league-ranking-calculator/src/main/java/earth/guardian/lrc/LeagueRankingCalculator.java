@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import org.apache.commons.cli.CommandLine;
@@ -16,7 +14,10 @@ import com.google.inject.Singleton;
 import earth.guardian.lrc.constants.CommandLineConstants;
 import earth.guardian.lrc.utils.L;
 import earth.guardian.lrc.utils.StartupParameters;
-import earth.guardian.lrc.utils.simple.SystemExit;
+import earth.guardian.lrc.utils.simple.SimpleBufferedReaderMaker;
+import earth.guardian.lrc.utils.simple.SimpleBufferedWriterMaker;
+import earth.guardian.lrc.utils.simple.SimpleFileMaker;
+import earth.guardian.lrc.utils.simple.SimpleSystemExit;
 
 /**
  * The league ranking calculator application.
@@ -24,9 +25,14 @@ import earth.guardian.lrc.utils.simple.SystemExit;
 @Singleton
 public class LeagueRankingCalculator {
 
-	@Inject
-	private SystemExit systemExit;
+	private final L log = LrcRuntime.getInjector().getInstance(L.class);
 	
+	@Inject private SimpleSystemExit systemExit;
+	@Inject private SimpleBufferedReaderMaker bufferedReaderMaker;
+	@Inject private SimpleBufferedWriterMaker bufferedWriterMaker;
+	@Inject private StartupParameters startupParameters;
+	@Inject private SimpleFileMaker simpleFileMaker;
+		
 	/**
 	 * 
 	 */
@@ -50,7 +56,7 @@ public class LeagueRankingCalculator {
 	 * @param args
 	 */
 	private void initArguments(String[] args) {
-		final CommandLine commandLine = LrcRuntime.getInjector().getInstance(StartupParameters.class).interpret(args);
+		final CommandLine commandLine = startupParameters.interpret(args);
 		LrcRuntime.setCommandLine(commandLine);
 	}
 
@@ -62,9 +68,8 @@ public class LeagueRankingCalculator {
 		final String inputFileName = commandLine.getOptionValue(CommandLineConstants.getArgumentInput());
 		final String outputFileName = commandLine.getOptionValue(CommandLineConstants.getArgumentOutput());
 		final LeagueMatchRecorder recorder = LrcRuntime.getInjector().getInstance(LeagueMatchRecorder.class);
-
-		final File inputFile = new File(inputFileName);
-		final File outputFile = new File(outputFileName);		
+		final File inputFile = simpleFileMaker.make(inputFileName);
+		final File outputFile = simpleFileMaker.make(outputFileName);
 		validateInputFile(inputFile);
 		validateOutputFile(outputFile);
 		processInputFile(recorder, inputFile);
@@ -79,16 +84,16 @@ public class LeagueRankingCalculator {
 	private void processInputFile(LeagueMatchRecorder recorder, File inputFile) {
 		try {
 			String matchLine;
-			try (final BufferedReader objReader = new BufferedReader(new FileReader(inputFile))) {
+			try (final BufferedReader objReader =  bufferedReaderMaker.make(inputFile)) {
 				while ((matchLine = objReader.readLine()) != null) {
 					recorder.recordMatchResult(matchLine);
 				}	
 			}
 		} catch (FileNotFoundException e) {
-			L.getLogger().error("{} Input file {} does not exist.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath(), e);
+			log.logInputFileDoesNotExist(inputFile, e);
 			systemExit.exit(1);
 		} catch (IOException e) {
-			L.getLogger().error("{} Failed to read line from {}.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath(), e);
+			log.logFailedToReadLineFromInputFile(inputFile, e);			
 			systemExit.exit(1);
 		}	
 	}
@@ -99,10 +104,10 @@ public class LeagueRankingCalculator {
 	 * @param outputFile
 	 */
 	private void writeOutputFile(LeagueMatchRecorder recorder, File outputFile) {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
-			writer.append(recorder.getLeagueResults());
-		} catch (IOException e) {
-			L.getLogger().error("{} Failed to write league results to  {}.", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath(), e);
+		try (BufferedWriter writer = bufferedWriterMaker.make(outputFile)) {
+			writer.write(recorder.getLeagueResults());
+		} catch (IOException e) {			
+			log.logFailedToWriteLeageResultsToOutputFile(outputFile, e);
 			systemExit.exit(1);
 		}
 	}
@@ -112,11 +117,11 @@ public class LeagueRankingCalculator {
 	 * @param inputFile
 	 */
 	private void validateInputFile(File inputFile) {
-		if (!inputFile.exists()) {
-			L.getLogger().error("{} Input file {} does not exist.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath());
+		if (!inputFile.exists()) {			
+			log.logInputFileDoesNotExist(inputFile);
 			systemExit.exit(1);
-		} else if (!inputFile.canRead() || inputFile.isDirectory()) {
-			L.getLogger().error("{} Input file {} cannot be read.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath());
+		} else if (!inputFile.canRead() || inputFile.isDirectory()) {			
+			log.logInputFileCannotBeReadFrom(inputFile);
 			systemExit.exit(1);
 		}
 	}
@@ -127,19 +132,19 @@ public class LeagueRankingCalculator {
 	 * @param outputFileName
 	 */
 	private void validateOutputFile(File outputFile) {
-		if (outputFile.exists()) {
-			L.getLogger().error("{} Output file {} already exist.", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath());
+		if (outputFile.exists()) {			
+			log.logOutputFileAlreadyExists(outputFile);
 			systemExit.exit(1);
 		}		
 
 		try {
 			final boolean created = outputFile.createNewFile();
-			if (!created) {
-				L.getLogger().error("{} Could not create output file {}.", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath());
+			if (!created) {				
+				log.logCouldNotCreateOutputFile(outputFile);
 				systemExit.exit(1);
 			}
 		} catch (IOException e) {
-			L.getLogger().error("{} Could not create output file {}.  {}", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath(), e.getMessage(), e);
+			log.logCouldNotCreateOutputFile(outputFile, e);
 			systemExit.exit(1);
 		}
 	}

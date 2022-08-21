@@ -36,7 +36,7 @@ public class Main {
 			initInjector();
 			final LeagueRankingCalculator application = LrcRuntime.getInjector().getInstance(LeagueRankingCalculator.class);
 			application.run(args);
-			System.exit(0);	
+			// System.exit(0);	
 		} catch (Exception e) {
 			e.printStackTrace(); // Log to console to help debug startup issues.
 			L.getLogger().error("{} {}", LrcRuntime.getCorrelationId(), e.getMessage(), e);

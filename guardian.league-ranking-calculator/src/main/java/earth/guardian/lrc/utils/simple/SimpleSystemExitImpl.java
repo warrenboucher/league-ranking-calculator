@@ -3,7 +3,7 @@ package earth.guardian.lrc.utils.simple;
 import com.google.inject.Singleton;
 
 @Singleton
-public class SystemExitImpl implements SystemExit {
+public class SimpleSystemExitImpl implements SimpleSystemExit {
 
 	/**
 	 * @param code

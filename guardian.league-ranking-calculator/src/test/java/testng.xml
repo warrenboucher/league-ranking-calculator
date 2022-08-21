@@ -5,8 +5,8 @@
   <test name="UnitTests" >
     <groups>
       <run>
-        <include name="testng-unittest-utils" />
-        <include name="testng-unittest-models" />        
+        <include name="testng-unittest" />
+        <include name="testng-integrationtest" />        
       </run>
     </groups>
     <packages>

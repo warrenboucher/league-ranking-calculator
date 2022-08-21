@@ -11,6 +11,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		
 		<version.log4j>2.17.1</version.log4j>
+		<version.fasterxmljackson>2.13.3</version.fasterxmljackson>
 		<version.slf4j>1.7.36</version.slf4j>
 		<version.guice>5.0.1</version.guice>
 		<version.commonscli>1.5.0</version.commonscli>
@@ -107,7 +108,30 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 			<version>${version.log4j}</version>
-		</dependency>		
+		</dependency>
+		
+		<!-- 
+		Should be using log4j2 withj slf4j but its showing some security 
+		vulnerabilities in latest version.
+		-->				
+		
+		<!-- Used to parse json log4j2 json configuration file. -->
+		<dependency>
+  			<groupId>com.fasterxml.jackson.core</groupId>
+  			<artifactId>jackson-core</artifactId>
+  			<version>${version.fasterxmljackson}</version>
+		</dependency>
+		<dependency>
+  			<groupId>com.fasterxml.jackson.core</groupId>
+  			<artifactId>jackson-databind</artifactId>
+  			<version>${version.fasterxmljackson}</version>
+		</dependency>
+		<dependency>
+  			<groupId>com.fasterxml.jackson.core</groupId>
+  			<artifactId>jackson-annotations</artifactId>
+  			<version>${version.fasterxmljackson}</version>
+		</dependency>			
+		
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>

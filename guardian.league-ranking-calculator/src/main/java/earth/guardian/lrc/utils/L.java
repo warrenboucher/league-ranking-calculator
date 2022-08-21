@@ -1,5 +1,9 @@
 package earth.guardian.lrc.utils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
@@ -81,6 +85,82 @@ public class L {
 	public void logMatchResult(String teamName, int matchScore, long seasonScore) {
 		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
 		logger.debug("{} {} recorded match score {}.  Season total is {}.", LrcRuntime.getCorrelationId(), teamName, matchScore, seasonScore);
+	}
+
+	/**
+	 * 
+	 * @param inputFile
+	 * @param e
+	 */
+	public void logInputFileDoesNotExist(File inputFile, FileNotFoundException e) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Input file {} does not exist.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath(), e);
+	}
+
+	/**
+	 * 
+	 * @param inputFile
+	 * @param e
+	 */
+	public void logFailedToReadLineFromInputFile(File inputFile, IOException e) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Failed to read line from input file {}.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath(), e);	
+	}
+
+	/**
+	 * 
+	 * @param outputFile
+	 * @param e
+	 */
+	public void logFailedToWriteLeageResultsToOutputFile(File outputFile, IOException e) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Failed to write league results to  {}.", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath(), e);		
+	}
+
+	/**
+	 * 
+	 * @param inputFile
+	 */
+	public void logInputFileDoesNotExist(File inputFile) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Input file {} does not exist.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath());		
+	}
+
+	/**
+	 * 
+	 * @param inputFile
+	 */
+	public void logInputFileCannotBeReadFrom(File inputFile) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Input file {} cannot be read.", LrcRuntime.getCorrelationId(), inputFile.getAbsolutePath());
+	}
+
+	/**
+	 * 
+	 * @param outputFile
+	 */
+	public void logOutputFileAlreadyExists(File outputFile) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Output file {} already exist.", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath());		
+	}
+
+	/**
+	 * 
+	 * @param outputFile
+	 */
+	public void logCouldNotCreateOutputFile(File outputFile) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Could not create output file {}.", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath());		
+	}
+
+	/**
+	 * 
+	 * @param outputFile
+	 * @param e
+	 */
+	public void logCouldNotCreateOutputFile(File outputFile, IOException e) {
+		final Logger logger = getLogger(getCallingClass(INDEX_CALLING_CLASS_LOG_METHOD));
+		logger.error("{} Could not create output file {}.  {}", LrcRuntime.getCorrelationId(), outputFile.getAbsolutePath(), e.getMessage(), e);		
 	}
 	
 }

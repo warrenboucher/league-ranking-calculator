@@ -32,7 +32,7 @@ public class LeagueMatchRecorderTest {
 	/**
 	 * Run before each test to setup mocks and any other required setup.
 	 */
-	@BeforeMethod(groups = TestConstants.UNITTEST_UTILS)
+	@BeforeMethod(groups = TestConstants.UNITTEST)
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		LrcRuntime.setInjector(injector);
@@ -42,7 +42,7 @@ public class LeagueMatchRecorderTest {
 	/**
 	 * Basic test to see if we can instantiate model.
 	 */
-	@Test(groups = TestConstants.UNITTEST_UTILS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testConstructor() {
 		Assert.assertNotNull(LrcRuntime.getInjector().getInstance(LeagueMatchRecorder.class), "Failed to create League instance.");				
 	}
@@ -50,7 +50,7 @@ public class LeagueMatchRecorderTest {
 	/**
 	 * Basic test to see if we can instantiate model.
 	 */
-	@Test(groups = TestConstants.UNITTEST_MODELS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testBasicSeason() {
 		final LeagueMatchRecorder fixture = LrcRuntime.getInjector().getInstance(LeagueMatchRecorder.class);
 		fixture.recordMatchResult("Lions 3, Snakes 3");

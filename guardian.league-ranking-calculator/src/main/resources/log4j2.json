@@ -1,0 +1,54 @@
+{
+  "configuration" : {
+    "name" : "production-configuration",
+    "status" : "error",
+    "packages": "earth.guardian",
+    "properties" : {
+      "property" : [ {
+        "name" : "log-path",
+        "value" : "logs"
+      }, {
+        "name" : "archive",
+        "value" : "${log-path}/archive"
+      } ]
+    },
+    "appenders" : {
+      "Console" : {
+        "name" : "Console-Appender",
+        "target" : "SYSTEM_OUT",
+        "PatternLayout" : {
+          "pattern" : "[%-5level] %d{yyyy-MMM-dd HH:mm:ss.SSS} %t - %msg%n"
+        }
+      },
+      "RollingFile" : [ {
+        "name" : "Root-Appender",
+        "fileName" : "${log-path}/root.log",
+        "filePattern" : "${archive}/root.log.%d{yyyy-MM-dd-hh-mm}.gz",
+        "bufferedIO" : false,
+        "PatternLayout" : {
+          "pattern" : "[%-5level] %d{yyyy-MMM-dd HH:mm:ss.SSS} %t - %msg%n"
+        },
+        "Policies" : {
+          "SizeBasedTriggeringPolicy" : {
+            "size" : "100 MB"
+          }
+        },
+        "DefaultRolloverStrategy" : {
+          "max" : "5"
+        }
+      } ]
+    },
+    "loggers" : {
+      "root" : {
+        "level" : "info",
+        "appender-ref" : [ {
+          "ref" : "Root-Appender",
+          "level" : "info"
+        }, {
+          "ref" : "Console-Appender",
+          "level" : "info"
+        } ]
+      }
+    }
+  }
+}

@@ -13,6 +13,9 @@ import com.google.inject.Singleton;
 @Singleton
 public class TeamCache {
 
+	/**
+	 * Lowercase team name to Team mapping.
+	 */
 	private final Map<String, Team> leagueTeams = new HashMap<>();
 	
 	/**

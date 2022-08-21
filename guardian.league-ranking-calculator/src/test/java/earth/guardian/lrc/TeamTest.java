@@ -39,7 +39,7 @@ public class TeamTest {
 	/**
 	 * Run before each test to setup mocks and any other required setup.
 	 */
-	@BeforeMethod(groups = TestConstants.UNITTEST_UTILS)
+	@BeforeMethod(groups = TestConstants.UNITTEST)
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 		LrcRuntime.setInjector(injector);
@@ -49,7 +49,7 @@ public class TeamTest {
 	/**
 	 * Basic test to see if we can instantiate model.
 	 */
-	@Test(groups = TestConstants.UNITTEST_MODELS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testConstructor() {
 		Assert.assertNotNull(new Team(TEST_TEAM_NAME), "Failed to create Team instance.");				
 	}
@@ -57,7 +57,7 @@ public class TeamTest {
 	/**
 	 * Test that match results are recorded.
 	 */
-	@Test(groups = TestConstants.UNITTEST_MODELS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testMatchRecording() {
 		
 		final Team fixture = new Team(TEST_TEAM_NAME);
@@ -84,7 +84,7 @@ public class TeamTest {
 	/**
 	 * Test that match season results are output as expected.
 	 */
-	@Test(groups = TestConstants.UNITTEST_MODELS)
+	@Test(groups = TestConstants.UNITTEST)
 	public void testOutputSeasonResult() {
 		final Team fixture = new Team(TEST_TEAM_NAME);
 		fixture.recordMatchScore(MatchScore.WON);
