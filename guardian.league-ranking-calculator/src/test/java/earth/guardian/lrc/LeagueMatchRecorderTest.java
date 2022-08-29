@@ -63,7 +63,7 @@ public class LeagueMatchRecorderTest {
 		expectedOutput.append(String.format("%s %n", "1. Tarantulas, 6 pts")); 
 		expectedOutput.append(String.format("%s %n", "2. Lions, 5 pts"));
 		expectedOutput.append(String.format("%s %n", "3. FC Awesome, 1 pts")); 
-		expectedOutput.append(String.format("%s %n", "4. Snakes, 1 pts")); 
+		expectedOutput.append(String.format("%s %n", "3. Snakes, 1 pts")); 
 		expectedOutput.append(String.format("%s %n", "5. Grouches, 0 pts")); 
 					
 		Assert.assertEquals(fixture.getLeagueResults(), expectedOutput.toString(), "Unexpected legue results");		

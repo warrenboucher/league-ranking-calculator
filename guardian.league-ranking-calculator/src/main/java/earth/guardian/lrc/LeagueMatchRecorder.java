@@ -64,9 +64,22 @@ public class LeagueMatchRecorder {
 		final StringBuilder builder = new StringBuilder();
 		final List<Team> teams = new ArrayList<>(teamCache.getTeams());
 		Collections.sort(teams, new TeamSorter());
+		
+		int place = 0;
+		long currentTeamScore = -1;
+		long previousTeamScore = -2;
 		for (int i = 0; i < teams.size(); i++) {
+			
+			currentTeamScore = teams.get(i).getSeasonScore();			
+			if (currentTeamScore != previousTeamScore) { // Only bump place if scores differ.
+				place = (i + 1); // First loop this will get 1.
+			}
+			
 			// Place. team name and points, platform newline character.
-			builder.append(String.format("%d. %s %n", (i+1), teams.get(i).toString()));
+			builder.append(String.format("%d. %s %n", place, teams.get(i).toString()));
+			
+			// Next loop.
+			previousTeamScore = currentTeamScore;
 		}
 		return builder.toString();
 	}
